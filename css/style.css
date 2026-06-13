@@ -55,7 +55,7 @@ body:not(.touch-device) .skill-card {
     cursor: none;
 }
 
-/* design tokens - learned about CSS variables from Kevin Powell yt */
+/* design tokens - Kevin Powell yt */
 :root {
     --bg-primary: #0a0a0a;
     --bg-secondary: #0e0e10;
@@ -403,7 +403,7 @@ section {
     color: var(--accent);
 }
 
-/* navbar - glass effect from a codepen */
+/* navbar glass - codepen */
 .navbar {
     position: fixed;
     top: 0;
@@ -745,7 +745,7 @@ section {
     position: relative;
 }
 
-/* gradient border using mask trick - found this on CSSTricks blog */
+/* mask border trick - CSSTricks */
 .image-frame::after {
     content: '';
     position: absolute;
@@ -1289,7 +1289,7 @@ section {
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
-/* rotating gradient border - codepen by cruip had this */
+/* conic gradient border - codepen cruip */
 .cert-card::before {
     content: '';
     position: absolute;

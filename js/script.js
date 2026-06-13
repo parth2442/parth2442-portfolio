@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.classList.add('touch-device');
     }
 
-    // starfield canvas with nebula - got the idea from a CodePen tutorial
+    // starfield canvas - codepen
     var starCanvas = document.getElementById('starfield');
     if (starCanvas) {
         var sCtx = starCanvas.getContext('2d');
@@ -151,7 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
         animateNebula();
     }
 
-    // custom cursor - lerp follow, saw this on a YouTube tutorial
+    // custom cursor lerp - yt
     if (!isTouch) {
         var cursorDot = document.querySelector('.cursor-dot');
         var cursorRing = document.querySelector('.cursor-ring');
@@ -194,7 +194,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // magnetic buttons - codrops tutorial had this effect, tried to recreate it
+    // magnetic buttons - codrops
     if (!isTouch) {
         var magBtns = document.querySelectorAll('.btn, .nav-link, .footer-socials a, .social-link');
         for (var m = 0; m < magBtns.length; m++) {
@@ -219,7 +219,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // 3d tilt on project cards - inspired by alvarotrigo.com tutorial
+    // 3d tilt cards - alvarotrigo.com
     if (!isTouch) {
         var tiltCards = document.querySelectorAll('.project-card');
         for (var t = 0; t < tiltCards.length; t++) {
@@ -304,7 +304,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     window.addEventListener('scroll', updateActiveLink, { passive: true });
 
-    // hero stagger - webdev simplified tutorial on yt
+    // hero stagger - webdev simplified yt
     if (heroContent) {
         const children = heroContent.children;
         const delays = [0, 80, 150, 250, 380, 500, 650];
@@ -314,7 +314,7 @@ document.addEventListener('DOMContentLoaded', () => {
         requestAnimationFrame(() => heroContent.classList.add('visible'));
     }
 
-    // reveal sections on scroll - IntersectionObserver from MDN docs
+    // IntersectionObserver - MDN
     const revealObserver = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
             if (entry.isIntersecting) {
@@ -325,7 +325,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { threshold: 0.08 });
     revealElements.forEach(el => revealObserver.observe(el));
 
-    // typing effect - copied from a stackoverflow answer
+    // typing effect - stackoverflow
     const roles = [
         'Python Full-Stack Developer',
         'Ethical Hacker',
@@ -363,7 +363,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     typeEffect();
 
-    // stagger card entrance - found this pattern on stackoverflow
+    // stagger entrance - stackoverflow
     const staggerState = new Map();
 
     staggerGrids.forEach(grid => {
@@ -462,7 +462,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 400 + i * 200);
     });
 
-    // cert flip on click - got this idea from a w3schools tutorial
+    // cert flip - w3schools
     var wrappers = document.querySelectorAll('.cert-card-wrapper');
     for (var i = 0; i < wrappers.length; i++) {
         (function(w) {
