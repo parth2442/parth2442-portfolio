@@ -1,16 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- ===== Meta tags — tells browsers & social platforms about the page ===== -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Before deploying, replace https://parth2442.github.io with your domain -->
+    <!-- TODO: Before deploying, replace https://parth2442.github.io with your actual domain -->
 
     <title>Parth Raut | Developer & Cybersecurity Enthusiast</title>
     <meta name="description" content="Parth Raut — builds things with Python, makes Discord bots, pokes at security stuff. Portfolio and projects.">
     <meta name="keywords" content="Parth Raut, Python Developer, Full-Stack Developer, Ethical Hacker, Discord Bot Developer, Cybersecurity, Portfolio">
     <meta name="author" content="Parth Sachin Raut">
     <meta name="robots" content="index, follow">
+
+    <!-- Open Graph — controls how links look when shared on social media -->
     <meta property="og:title" content="Parth Raut | Developer & Cybersecurity Enthusiast">
     <meta property="og:description" content="Parth Raut — builds things with Python, makes Discord bots, pokes at security stuff.">
     <meta property="og:type" content="website">
@@ -20,17 +23,47 @@
     <meta property="og:image:height" content="100">
     <meta property="og:locale" content="en_IN">
     <meta property="og:site_name" content="Parth Raut Portfolio">
+
+    <!-- Twitter card — how links look when shared on Twitter/X -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Parth Raut | Developer">
     <meta name="twitter:description" content="Python developer, Discord bots, cybersecurity experiments.">
     <meta name="twitter:image" content="favicon.svg">
+
+    <!-- Icons & performance -->
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="canonical" href="https://parth2442.github.io">
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+
+    <!-- External styles: Font Awesome for icons, then my own stylesheet -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    <!-- ===== Background effects — floating orbs + starfield canvas ===== -->
+    <div class="bg-canvas"><div class="orb3"></div></div>
+    <canvas id="starfield"></canvas>
+
+    <!-- ===== Custom cursor elements (hidden on touch devices via JS) ===== -->
+    <div class="cursor-ring"></div>
+    <div class="cursor-dot"></div>
+
+    <!-- ============================================================
+         COVER / CURTAIN — the full-screen intro that slides up on click
+         ============================================================ -->
+    <div id="cover">
+        <div class="cover-bg">
+            <div class="cover-bg-grid"></div>
+        </div>
+        <div class="cover-content">
+            <h1 class="cover-title">Hi, I'm <span class="cover-highlight">Parth Sachin Raut</span></h1>
+            <p class="cover-subtitle">[ <a href="#" id="explore-link">click to explore about me</a> ]</p>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         HEADER / NAVBAR — fixed top bar with logo + navigation links
+         ============================================================ -->
     <header>
         <nav class="navbar" aria-label="Main navigation">
             <div class="container">
@@ -50,7 +83,11 @@
         </nav>
     </header>
 
+    <!-- ============================================================
+         MAIN CONTENT
+         ============================================================ -->
     <main>
+        <!-- ===== HERO SECTION — the big intro with name, tagline, CTAs ===== -->
         <section id="home" class="hero" aria-label="Hero introduction">
             <div class="hero-glow" aria-hidden="true"></div>
             <div class="container">
@@ -73,6 +110,7 @@
             </div>
         </section>
 
+        <!-- ===== ABOUT SECTION — photo, intro text, focus areas, quick info ===== -->
         <section id="about" class="about section" aria-label="About me">
             <div class="container section-hidden" id="aboutContainer">
                 <h2 class="section-title">About <span class="accent">Me</span></h2>
@@ -118,6 +156,7 @@
             </div>
         </section>
 
+        <!-- ===== SKILLS SECTION — tech stack cards with icons ===== -->
         <section id="skills" class="skills section" aria-label="Technical skills">
             <div class="container section-hidden" id="skillsContainer">
                 <h2 class="section-title">Technical <span class="accent">Skills</span></h2>
@@ -158,6 +197,7 @@
             </div>
         </section>
 
+        <!-- ===== PROJECTS SECTION — featured project cards with tags ===== -->
         <section id="projects" class="projects section" aria-label="Featured projects">
             <div class="container section-hidden" id="projectsContainer">
                 <h2 class="section-title">Featured <span class="accent">Projects</span></h2>
@@ -227,6 +267,145 @@
             </div>
         </section>
 
+        <!-- ============================================================
+             CERTIFICATES SECTION — skill badges with roll-in animations
+             Cards have front/back layering (CSS + JS handles the interaction)
+             ============================================================ -->
+        <section id="certificates" class="certificates section" aria-label="Verified Skills">
+            <div class="container section-hidden" id="certificatesContainer">
+                <h2 class="section-title"><span class="accent">Verified</span> Skills</h2>
+                <div class="certificates-grid">
+                    <div class="cert-card-wrapper">
+                        <div class="cert-card" data-side="left">
+                            <div class="cert-glow"></div>
+                            <div class="cert-shine"></div>
+                            <div class="cert-accent-line"></div>
+                            <span class="cert-number">01</span>
+                            <div class="cert-icon"><i class="fas fa-file-code"></i></div>
+                            <h3>HTML</h3>
+                            <p>Web development with HTML</p>
+                            <a href="certificates/Parth Raut (HTML).pdf" target="_blank" rel="noopener noreferrer" class="cert-badge">View <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="cert-card-wrapper" id="css-card">
+                        <div class="cert-card-back">
+                            <div class="cert-glow"></div>
+                            <div class="cert-shine"></div>
+                            <div class="cert-accent-line"></div>
+                            <div class="cert-icon icon-sm"><i class="fab fa-css3-alt"></i></div>
+                            <h3>CSS</h3>
+                            <p>Verified by HackerRank — CSS: selectors, flexbox, grid, responsive design</p>
+                            <a href="certificates/css certificate.pdf" target="_blank" rel="noopener noreferrer" class="cert-badge">View <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                        <div class="cert-card" data-side="right">
+                            <div class="cert-glow"></div>
+                            <div class="cert-shine"></div>
+                            <div class="cert-accent-line"></div>
+                            <span class="cert-number">02</span>
+                            <div class="cert-icon"><i class="fab fa-css3-alt"></i></div>
+                            <h3>CSS</h3>
+                            <p>Web development with CSS</p>
+                            <a href="certificates/Parth Raut (Css) .pdf" target="_blank" rel="noopener noreferrer" class="cert-badge">View <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="cert-card-wrapper">
+                        <div class="cert-card" data-side="left">
+                            <div class="cert-glow"></div>
+                            <div class="cert-shine"></div>
+                            <div class="cert-accent-line"></div>
+                            <span class="cert-number">03</span>
+                            <div class="cert-icon"><i class="fab fa-js"></i></div>
+                            <h3>JavaScript</h3>
+                            <p>Verified by HackerRank — Core JS: functions, closures, ES6+, DOM manipulation</p>
+                            <a href="certificates/javascript_basic certificate.pdf" target="_blank" rel="noopener noreferrer" class="cert-badge">View <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="cert-card-wrapper">
+                        <div class="cert-card-back">
+                            <div class="cert-glow"></div>
+                            <div class="cert-shine"></div>
+                            <div class="cert-accent-line"></div>
+                            <div class="cert-icon icon-sm"><i class="fab fa-python"></i></div>
+                            <h3>Python</h3>
+                            <p>Verified by HackerRank — Python fundamentals: data types, OOP, control flow</p>
+                            <a href="certificates/python_basic certificate.pdf" target="_blank" rel="noopener noreferrer" class="cert-badge">View <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                        <div class="cert-card" data-side="right">
+                            <div class="cert-glow"></div>
+                            <div class="cert-shine"></div>
+                            <div class="cert-accent-line"></div>
+                            <span class="cert-number">04</span>
+                            <div class="cert-icon"><i class="fab fa-python"></i></div>
+                            <h3>Python Basics</h3>
+                            <p>Verified by HackerRank — Python fundamentals: data types, OOP, control flow</p>
+                            <a href="certificates/Python basics(2).pdf" target="_blank" rel="noopener noreferrer" class="cert-badge">View <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="cert-card-wrapper">
+                        <div class="cert-card" data-side="center">
+                            <div class="cert-glow"></div>
+                            <div class="cert-shine"></div>
+                            <div class="cert-accent-line"></div>
+                            <span class="cert-number">05</span>
+                            <div class="cert-icon"><i class="fas fa-database"></i></div>
+                            <h3>SQL (Basic)</h3>
+                            <p>Verified by HackerRank — SQL queries: joins, subqueries, aggregations, CRUD</p>
+                            <a href="certificates/sql_basic certificate.pdf" target="_blank" rel="noopener noreferrer" class="cert-badge">View <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="cert-card-wrapper">
+                        <div class="cert-card" data-side="left">
+                            <div class="cert-glow"></div>
+                            <div class="cert-shine"></div>
+                            <div class="cert-accent-line"></div>
+                            <span class="cert-number">06</span>
+                            <div class="cert-icon"><i class="fab fa-node-js"></i></div>
+                            <h3>Node.js</h3>
+                            <p>Verified by HackerRank — Node.js runtime, modules, async patterns, Express</p>
+                            <a href="certificates/nodejs_basic certificate.pdf" target="_blank" rel="noopener noreferrer" class="cert-badge">View <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="cert-card-wrapper">
+                        <div class="cert-card" data-side="right">
+                            <div class="cert-glow"></div>
+                            <div class="cert-shine"></div>
+                            <div class="cert-accent-line"></div>
+                            <span class="cert-number">07</span>
+                            <div class="cert-icon"><i class="fab fa-react"></i></div>
+                            <h3>React</h3>
+                            <p>Verified by HackerRank — React components, state management, hooks, JSX</p>
+                            <a href="certificates/react_basic certificate.pdf" target="_blank" rel="noopener noreferrer" class="cert-badge">View <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="cert-card-wrapper">
+                        <div class="cert-card" data-side="left">
+                            <div class="cert-glow"></div>
+                            <div class="cert-shine"></div>
+                            <div class="cert-accent-line"></div>
+                            <span class="cert-number">08</span>
+                            <div class="cert-icon"><i class="fas fa-shield-halved"></i></div>
+                            <h3>Ethical Hacking</h3>
+                            <p>Cybersecurity fundamentals</p>
+                            <a href="certificates/Parth Raut (EH) .pdf" target="_blank" rel="noopener noreferrer" class="cert-badge">View <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="cert-card-wrapper">
+                        <div class="cert-card" data-side="right">
+                            <div class="cert-glow"></div>
+                            <div class="cert-shine"></div>
+                            <div class="cert-accent-line"></div>
+                            <span class="cert-number">09</span>
+                            <div class="cert-icon"><i class="fas fa-rocket"></i></div>
+                            <h3>Digital Productivity</h3>
+                            <p>Productivity &amp; workflow tools</p>
+                            <a href="certificates/Parth Raut (Digital productivity).pdf" target="_blank" rel="noopener noreferrer" class="cert-badge">View <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== CONTACT SECTION — email, social links, call-to-action ===== -->
         <section id="contact" class="contact section" aria-label="Contact information">
             <div class="container section-hidden" id="contactContainer">
                 <h2 class="section-title">Get In <span class="accent">Touch</span></h2>
@@ -260,6 +439,13 @@
                                 <p><a href="https://www.linkedin.com/in/parth-sachin-raut-/" target="_blank" rel="noopener noreferrer" class="contact-link">Parth Sachin Raut</a></p>
                             </div>
                         </div>
+                        <div class="contact-item">
+                            <i class="fab fa-instagram" aria-hidden="true"></i>
+                            <div>
+                                <h4>Instagram</h4>
+                                <p><a href="https://instagram.com/parth.cd" target="_blank" rel="noopener noreferrer" class="contact-link">@parth.cd</a></p>
+                            </div>
+                        </div>
                     </div>
                     <div class="contact-cta">
                         <h3>Let's work together</h3>
@@ -274,6 +460,9 @@
         </section>
     </main>
 
+    <!-- ============================================================
+         FOOTER — copyright + social links
+         ============================================================ -->
     <footer class="footer" role="contentinfo">
         <div class="container">
             <div class="footer-content">
@@ -282,11 +471,13 @@
                     <a href="https://github.com/parth2442" target="_blank" rel="noopener noreferrer" title="GitHub" aria-label="GitHub"><i class="fab fa-github"></i></a>
                     <a href="https://www.linkedin.com/in/parth-sachin-raut-/" target="_blank" rel="noopener noreferrer" title="LinkedIn" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
                     <a href="https://discord.com/users/parth.cd" target="_blank" rel="noopener noreferrer" title="Discord" aria-label="Discord"><i class="fab fa-discord"></i></a>
+                    <a href="https://instagram.com/parth.cd" target="_blank" rel="noopener noreferrer" title="Instagram" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
                 </div>
             </div>
         </div>
     </footer>
 
+    <!-- Script — deferred so it runs after the DOM is ready -->
     <script src="js/script.js" defer></script>
 </body>
 </html>

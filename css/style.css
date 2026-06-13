@@ -1,9 +1,70 @@
+/* ============================================================
+   GLOBAL RESET — zero out default margins/padding, consistent box model
+   ============================================================ */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+/* ============================================================
+   CUSTOM CURSOR — replaces the default pointer on desktop
+   dot = small filled circle, ring = larger outline that follows with lag
+   ============================================================ */
+.cursor-dot {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    background: var(--accent);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 99998;
+    transform: translate(-50%, -50%);
+    transition: width 0.15s ease, height 0.15s ease, background 0.15s ease;
+}
+
+.cursor-ring {
+    position: fixed;
+    width: 32px;
+    height: 32px;
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 99997;
+    transform: translate(-50%, -50%);
+    transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+}
+
+/* Ring grows & gets a subtle fill when hovering over clickable elements */
+.cursor-ring.hover {
+    width: 56px;
+    height: 56px;
+    border-color: rgba(59, 130, 246, 0.5);
+    background: rgba(59, 130, 246, 0.06);
+}
+
+/* Hide cursor when mouse leaves the window entirely */
+.cursor-ring.hide,
+.cursor-dot.hide {
+    opacity: 0;
+}
+
+/* On desktop (non-touch), hide the native cursor over interactive elements */
+body:not(.touch-device) a,
+body:not(.touch-device) button,
+body:not(.touch-device) .cert-card-wrapper,
+body:not(.touch-device) .project-card,
+body:not(.touch-device) .btn,
+body:not(.touch-device) #cover,
+body:not(.touch-device) .skill-card {
+    cursor: none;
+}
+
+/* ============================================================
+   DESIGN TOKENS (CSS custom properties)
+   All colours, spacing, fonts, and effects are defined here
+   so the rest of the stylesheet stays DRY.
+   ============================================================ */
 :root {
     --bg-primary: #0a0a0a;
     --bg-secondary: #0e0e10;
@@ -23,8 +84,141 @@
     --radius-lg: 20px;
     --max-width: 1100px;
     --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    --glass-bg: rgba(255, 255, 255, 0.03);
+    --glass-bg-hover: rgba(255, 255, 255, 0.06);
+    --glass-border: rgba(255, 255, 255, 0.06);
+    --glass-border-hover: rgba(255, 255, 255, 0.12);
+    --glass-blur: 12px;
+    --glass-blur-hover: 16px;
 }
 
+/* ============================================================
+   COVER / CURTAIN — full-screen landing overlay
+   Slides up (translateY -100%) when user clicks anywhere
+   ============================================================ */
+#cover {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 1.2s cubic-bezier(0.77, 0, 0.18, 1);
+    transform-origin: top center;
+    cursor: pointer;
+}
+
+/* Deep gradient background with floating orbs */
+.cover-bg {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 50%, #1a1a2e, #0a0a0a);
+    z-index: -1;
+    overflow: hidden;
+}
+
+/* Subtle grid overlay on the cover background */
+.cover-bg-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(59, 130, 246, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(59, 130, 246, 0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    z-index: 0;
+}
+
+/* Two animated glowing orbs behind the cover text */
+.cover-bg::before {
+    content: '';
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.08) 0%, transparent 70%);
+    top: -100px;
+    left: -100px;
+    animation: coverOrb1 12s ease-in-out infinite alternate;
+}
+
+.cover-bg::after {
+    content: '';
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.06) 0%, transparent 70%);
+    bottom: -150px;
+    right: -100px;
+    animation: coverOrb2 15s ease-in-out infinite alternate;
+}
+
+@keyframes coverOrb1 {
+    0% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(200px, 100px) scale(1.2); }
+    100% { transform: translate(100px, 200px) scale(0.9); }
+}
+
+@keyframes coverOrb2 {
+    0% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(-150px, -80px) scale(1.15); }
+    100% { transform: translate(-80px, -50px) scale(0.95); }
+}
+
+/* When user clicks, the whole cover slides upward out of view */
+#cover.open {
+    transform: translateY(-100%);
+}
+
+/* Cover text fades in slightly after page load */
+.cover-content {
+    text-align: center;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeUp 1s ease forwards 0.3s;
+}
+
+@keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.cover-title {
+    font-size: 3.5rem;
+    font-weight: 300;
+    letter-spacing: 2px;
+    color: #f0f0f0;
+}
+
+.cover-title .cover-highlight {
+    font-weight: 700;
+    background: linear-gradient(135deg, #3b82f6, #60a5fa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.cover-subtitle {
+    margin-top: 24px;
+    font-size: 1.1rem;
+    letter-spacing: 3px;
+    color: #a0a0a8;
+}
+
+.cover-subtitle a {
+    color: #3b82f6;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s, color 0.3s;
+    cursor: pointer;
+}
+
+.cover-subtitle a:hover {
+    color: #fff;
+    border-bottom-color: #3b82f6;
+}
+
+/* ============================================================
+   BASE HTML / BODY
+   Smooth scrolling, dark background, anti-aliased fonts
+   ============================================================ */
 html {
     scroll-behavior: smooth;
     scroll-padding-top: 64px;
@@ -38,8 +232,87 @@ body {
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    -webkit-tap-highlight-color: transparent;
 }
 
+/* ============================================================
+   BACKGROUND CANVAS — decorative floating orbs behind everything
+   These add subtle depth to the dark theme via glassmorphism
+   ============================================================ */
+.bg-canvas {
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.bg-canvas::before {
+    content: '';
+    position: absolute;
+    width: 700px;
+    height: 700px;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.06) 0%, transparent 70%);
+    top: -200px;
+    left: -200px;
+    animation: bgOrb1 25s ease-in-out infinite alternate;
+}
+
+.bg-canvas::after {
+    content: '';
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.04) 0%, transparent 70%);
+    bottom: -150px;
+    right: -100px;
+    animation: bgOrb2 20s ease-in-out infinite alternate;
+}
+
+.bg-canvas .orb3 {
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(34, 197, 94, 0.03) 0%, transparent 70%);
+    top: 50%;
+    left: 60%;
+    animation: bgOrb3 18s ease-in-out infinite alternate;
+}
+
+@keyframes bgOrb1 {
+    0% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(250px, 150px) scale(1.3); }
+    100% { transform: translate(100px, 300px) scale(0.9); }
+}
+
+@keyframes bgOrb2 {
+    0% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(-200px, -100px) scale(1.2); }
+    100% { transform: translate(-100px, -60px) scale(0.95); }
+}
+
+@keyframes bgOrb3 {
+    0% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(-100px, -80px) scale(1.1); }
+    66% { transform: translate(80px, -120px) scale(0.9); }
+    100% { transform: translate(-50px, 0) scale(1.05); }
+}
+
+/* ============================================================
+   STARFIELD CANVAS — nebula clouds + floating particles
+   Full-screen fixed canvas, rendered via JS with 'mix-blend-mode: screen'
+   ============================================================ */
+#starfield {
+    position: fixed;
+    inset: 0;
+    z-index: 5;
+    pointer-events: none;
+    width: 100vw;
+    height: 100vh;
+    mix-blend-mode: screen;
+}
+
+/* Subtle film-grain noise overlay across everything */
 body::before {
     content: '';
     position: fixed;
@@ -47,9 +320,12 @@ body::before {
     opacity: 0.025;
     pointer-events: none;
     z-index: 9999;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3Cfilter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
+/* ============================================================
+   SCROLLBAR & SELECTION — dark theme scrollbar, accent highlight
+   ============================================================ */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: var(--bg-primary); }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
@@ -60,6 +336,9 @@ body::before {
     color: #fff;
 }
 
+/* ============================================================
+   LAYOUT HELPERS
+   ============================================================ */
 .container {
     max-width: var(--max-width);
     margin: 0 auto;
@@ -79,6 +358,7 @@ section {
     letter-spacing: -0.02em;
 }
 
+/* Underline accent bar below each section title */
 .section-title::after {
     content: '';
     display: block;
@@ -93,6 +373,9 @@ section {
     color: var(--accent);
 }
 
+/* ============================================================
+   BUTTONS — three variants: primary (filled), outline, ghost
+   ============================================================ */
 .btn {
     display: inline-flex;
     align-items: center;
@@ -147,23 +430,26 @@ section {
     color: var(--accent);
 }
 
-/* nav */
+/* ============================================================
+   NAVBAR — fixed top bar, glassmorphism background
+   ============================================================ */
 .navbar {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     z-index: 1000;
-    background: rgba(10, 10, 10, 0.85);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border-bottom: 1px solid transparent;
+    background: rgba(10, 10, 10, 0.8);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--glass-border);
     transition: border-color 0.25s ease, background 0.25s ease;
 }
 
+/* Slightly more opaque when scrolled past hero */
 .navbar.scrolled {
-    background: rgba(10, 10, 10, 0.95);
-    border-bottom-color: var(--border);
+    background: rgba(10, 10, 10, 0.92);
+    border-bottom-color: var(--glass-border-hover);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
@@ -198,6 +484,7 @@ section {
     padding: 4px 0;
 }
 
+/* Animated underline on hover / active */
 .nav-link::after {
     content: '';
     position: absolute;
@@ -220,6 +507,7 @@ section {
     width: 100%;
 }
 
+/* Hamburger icon (hidden on desktop, shown on mobile) */
 .hamburger {
     display: none;
     flex-direction: column;
@@ -246,6 +534,7 @@ section {
     border-radius: 2px;
 }
 
+/* When hamburger is active (menu open), animate into X shape */
 .hamburger.active span:nth-child(1) {
     transform: rotate(45deg) translate(5px, 5px);
 }
@@ -258,7 +547,9 @@ section {
     transform: rotate(-45deg) translate(5px, -5px);
 }
 
-/* reveal on scroll */
+/* ============================================================
+   SCROLL REVEAL — hidden by default, revealed via IntersectionObserver
+   ============================================================ */
 .section-hidden {
     opacity: 0;
     transform: translateY(40px);
@@ -270,9 +561,12 @@ section {
     transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* hero */
+/* ============================================================
+   HERO — full-screen intro section with gradient + glow
+   ============================================================ */
 .hero {
     min-height: 100vh;
+    min-height: 100dvh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -283,6 +577,7 @@ section {
     background: linear-gradient(180deg, var(--bg-primary) 0%, #0b0d14 50%, var(--bg-primary) 100%);
 }
 
+/* Central glow behind the hero text */
 .hero-glow {
     position: absolute;
     top: 50%;
@@ -299,6 +594,7 @@ section {
     position: relative;
 }
 
+/* Green "available" status pill */
 .hero-status {
     display: inline-flex;
     align-items: center;
@@ -314,6 +610,7 @@ section {
     letter-spacing: 0.2px;
 }
 
+/* Animated green dot in the status pill */
 .hero-status::before {
     content: '';
     width: 6px;
@@ -336,6 +633,7 @@ section {
     letter-spacing: 0.3px;
 }
 
+/* Gradient text for the name */
 .hero-name {
     font-size: 3.2rem;
     font-weight: 800;
@@ -361,6 +659,7 @@ section {
     font-weight: 600;
 }
 
+/* Blinking cursor for the typing animation */
 .cursor {
     color: var(--accent);
     animation: blink 0.7s infinite;
@@ -406,8 +705,10 @@ section {
     align-items: center;
     justify-content: center;
     border-radius: var(--radius);
-    background: var(--bg-card);
-    border: 1px solid var(--border);
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--glass-border);
     text-decoration: none;
 }
 
@@ -418,7 +719,10 @@ section {
     box-shadow: 0 4px 15px rgba(59, 130, 246, 0.15);
 }
 
-/* hero entrance stagger */
+/* ============================================================
+   HERO ENTRANCE STAGGER — each child fades in with a delay
+   Controlled via JS adding .visible class after a small delay
+   ============================================================ */
 .hero-entrance > * {
     opacity: 0;
     transform: translateY(20px);
@@ -437,7 +741,9 @@ section {
     transform: translateY(0);
 }
 
-/* about */
+/* ============================================================
+   ABOUT — side-by-side layout with image, text, info grid
+   ============================================================ */
 .about {
     background: var(--bg-secondary);
     position: relative;
@@ -463,17 +769,21 @@ section {
     justify-content: center;
 }
 
+/* Circular profile image frame with hover glow */
 .image-frame {
     width: 260px;
     height: 260px;
     border-radius: 50%;
     overflow: hidden;
-    border: 3px solid var(--border);
-    background: var(--bg-card);
+    border: 3px solid var(--glass-border);
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
     transition: var(--transition);
     position: relative;
 }
 
+/* Spinning gradient border on hover (achieved with mask trick) */
 .image-frame::after {
     content: '';
     position: absolute;
@@ -513,6 +823,7 @@ section {
     line-height: 1.8;
 }
 
+/* Focus areas grid — 2x2 mini badges */
 .about-focus {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -546,6 +857,7 @@ section {
     flex-shrink: 0;
 }
 
+/* Quick info grid (Name, Role, From, Status) */
 .about-info {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -580,7 +892,9 @@ section {
     font-weight: 500;
 }
 
-/* skills */
+/* ============================================================
+   SKILLS — icon cards with glassmorphism + hover lift
+   ============================================================ */
 .skills-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -588,8 +902,10 @@ section {
 }
 
 .skill-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--glass-border);
     border-radius: var(--radius);
     padding: 28px 16px;
     text-align: center;
@@ -604,6 +920,7 @@ section {
     outline-offset: 2px;
 }
 
+/* Glowing gradient border that appears on hover */
 .skill-card::after {
     content: '';
     position: absolute;
@@ -616,10 +933,12 @@ section {
 }
 
 .skill-card:hover {
-    border-color: transparent;
+    border-color: var(--glass-border-hover);
     transform: translateY(-6px) scale(1.02);
     box-shadow: 0 16px 40px rgba(59, 130, 246, 0.12);
-    background: var(--bg-elevated);
+    background: var(--glass-bg-hover);
+    backdrop-filter: blur(var(--glass-blur-hover));
+    -webkit-backdrop-filter: blur(var(--glass-blur-hover));
 }
 
 .skill-card:hover::after {
@@ -646,20 +965,92 @@ section {
     line-height: 1.3;
 }
 
-/* projects */
+/* ============================================================
+   GLASS CARD FLOAT — subtle y-axis bounce for visual depth
+   Each card has a different --float-delay so they don't sync
+   ============================================================ */
+@keyframes glassFloat {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-4px); }
+}
+
+.skill-card, .project-card, .contact-item, .contact-cta {
+    animation: glassFloat 6s ease-in-out infinite;
+    animation-delay: calc(var(--float-delay, 0) * 1s);
+}
+
+.skill-card:nth-child(1) { --float-delay: 0; }
+.skill-card:nth-child(2) { --float-delay: 0.4; }
+.skill-card:nth-child(3) { --float-delay: 0.8; }
+.skill-card:nth-child(4) { --float-delay: 1.2; }
+.skill-card:nth-child(5) { --float-delay: 1.6; }
+.skill-card:nth-child(6) { --float-delay: 2.0; }
+.skill-card:nth-child(7) { --float-delay: 2.4; }
+.skill-card:nth-child(8) { --float-delay: 2.8; }
+
+.project-card:nth-child(1) { --float-delay: 0; }
+.project-card:nth-child(2) { --float-delay: 0.6; }
+.project-card:nth-child(3) { --float-delay: 1.2; }
+.project-card:nth-child(4) { --float-delay: 1.8; }
+
+/* Pause float animation on hover to avoid transform conflicts */
+.skill-card:hover,
+.project-card:hover,
+.contact-item:hover,
+.contact-cta:hover {
+    animation-play-state: paused;
+}
+
+/* ============================================================
+   PROJECT CARD ROLL-IN ANIMATIONS — used by the stagger observer
+   ============================================================ */
+@keyframes rollInLeft {
+    0% { transform: translateX(-150%) rotate(-180deg); opacity: 0; }
+    50% { transform: translateX(10%) rotate(8deg); opacity: 1; }
+    70% { transform: translateX(-4%) rotate(-3deg); }
+    85% { transform: translateX(2%) rotate(1deg); }
+    100% { transform: translateX(0) rotate(0deg); opacity: 1; }
+}
+
+@keyframes rollInRight {
+    0% { transform: translateX(150%) rotate(180deg); opacity: 0; }
+    50% { transform: translateX(-10%) rotate(-8deg); opacity: 1; }
+    70% { transform: translateX(4%) rotate(3deg); }
+    85% { transform: translateX(-2%) rotate(-1deg); }
+    100% { transform: translateX(0) rotate(0deg); opacity: 1; }
+}
+
+.project-card.roll-left {
+    animation: rollInLeft 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.project-card.roll-right {
+    animation: rollInRight 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* ============================================================
+   PROJECTS — 3-column grid of project cards
+   ============================================================ */
 .projects {
     background: var(--bg-secondary);
 }
 
 .projects-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 20px;
 }
 
+/* Last card spans full width (the "Featured" one) */
+.project-card:last-child {
+    grid-column: 1 / -1;
+}
+
 .project-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--glass-border);
     border-radius: var(--radius-lg);
     padding: 28px;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -667,8 +1058,11 @@ section {
     flex-direction: column;
     position: relative;
     overflow: hidden;
+    transform-style: preserve-3d;
+    will-change: transform;
 }
 
+/* Animated top accent line that expands on hover */
 .project-card::before {
     content: '';
     position: absolute;
@@ -685,13 +1079,23 @@ section {
     transform: scaleX(1);
 }
 
-.project-card:hover {
-    border-color: var(--border-hover);
+.project-card:hover,
+.project-card:focus-visible {
+    border-color: var(--glass-border-hover);
     transform: translateY(-8px);
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-    background: var(--bg-elevated);
+    background: var(--glass-bg-hover);
+    backdrop-filter: blur(var(--glass-blur-hover));
+    -webkit-backdrop-filter: blur(var(--glass-blur-hover));
+    outline: none;
 }
 
+.project-card:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+/* Featured badge — top-right of the featured project */
 .project-featured {
     position: relative;
 }
@@ -750,7 +1154,8 @@ section {
     width: 36px;
     height: 36px;
     border-radius: 8px;
-    border: 1px solid var(--border);
+    border: 1px solid var(--glass-border);
+    background: var(--glass-bg);
     text-decoration: none;
 }
 
@@ -775,6 +1180,7 @@ section {
     flex-grow: 1;
 }
 
+/* Tech tags row at bottom of each project card */
 .project-tags {
     display: flex;
     flex-wrap: wrap;
@@ -792,7 +1198,412 @@ section {
     letter-spacing: 0.2px;
 }
 
-/* contact */
+/* ============================================================
+   CERTIFICATES — stacked card layout with front/back layering
+   Front card slides right on hover to reveal the back card underneath
+   ============================================================ */
+.certificates {
+    background: var(--bg-primary);
+    position: relative;
+    overflow: hidden;
+}
+
+.certificates::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(ellipse at 20% 30%, rgba(59, 130, 246, 0.06) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 70%, rgba(99, 102, 241, 0.04) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(59, 130, 246, 0.02) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.certificates-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+    max-width: 920px;
+    margin: 0 auto;
+}
+
+/* When hovering one card, fade + blur the siblings (focus effect) */
+.certificates-grid:has(.cert-card-wrapper:hover) .cert-card-wrapper:not(:hover) {
+    opacity: 0.35;
+    filter: blur(1.5px);
+    transform: scale(0.92);
+    transition: all 0.5s ease;
+}
+
+.certificates-grid:has(.cert-card-wrapper.show-back) .cert-card-wrapper:not(.show-back) {
+    opacity: 0.35;
+    filter: blur(1.5px);
+    transform: scale(0.92);
+}
+
+.cert-card-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 280px;
+  margin: 0 auto;
+  cursor: pointer;
+}
+
+/* ===== BACK CARD — sits behind the front, initially offset ===== */
+.cert-card-back {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, #1a1a2e, #141416);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  text-decoration: none;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  z-index: 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  transform: rotate(-5deg) translateX(-18px) translateY(6px) scale(0.88);
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease, box-shadow 0.4s ease, opacity 0.6s ease;
+  pointer-events: none;
+}
+
+/* On hover or .show-back, slide back card further left to reveal */
+.cert-card-wrapper:hover .cert-card-back,
+.cert-card-wrapper.show-back .cert-card-back {
+  transform: rotate(-8deg) translateX(-200px) translateY(10px) scale(0.95);
+  border-color: rgba(59, 130, 246, 0.35);
+  box-shadow: 0 16px 50px rgba(59, 130, 246, 0.2);
+  pointer-events: auto;
+}
+
+.cert-card-back .icon-sm {
+  font-size: 1.2rem;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.12), rgba(99, 102, 241, 0.08));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  margin-bottom: 0;
+}
+
+/* ===== FRONT CARD — sits on top, slides right on hover ===== */
+.cert-card-wrapper .cert-card {
+  position: relative;
+  z-index: 1;
+  background: var(--bg-card);
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s ease;
+}
+
+.cert-card-wrapper:hover .cert-card,
+.cert-card-wrapper.show-back .cert-card {
+  transform: rotate(2deg) translateX(75px) translateY(-6px) scale(1.02);
+  box-shadow: 0 20px 60px rgba(59, 130, 246, 0.25);
+}
+
+/* Prevent nested hover on front card from overriding the wrapper animation */
+.cert-card-wrapper .cert-card:hover {
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* ===== CERT CARD (front face) ===== */
+.cert-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 40px 24px 30px;
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    text-decoration: none;
+    color: var(--text-primary);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.5s ease;
+    isolation: isolate;
+    border: 1px solid rgba(59, 130, 246, 0.08);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Animated rotating gradient border (conic) */
+.cert-card::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: var(--radius-lg);
+    background: conic-gradient(from 0deg, transparent, var(--accent), transparent 40%, transparent 60%, var(--accent), transparent);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    z-index: -2;
+    animation: rotateBorder 3s linear infinite;
+}
+
+@keyframes rotateBorder {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Inner fill that sits on top of the conic gradient */
+.cert-card::after {
+    content: '';
+    position: absolute;
+    inset: 2px;
+    border-radius: calc(var(--radius-lg) - 2px);
+    background: var(--bg-card);
+    z-index: -1;
+    transition: background 0.4s ease;
+}
+
+.cert-card:hover,
+.cert-card:focus-visible {
+    transform: translateY(-10px) scale(1.03);
+    box-shadow: 0 24px 60px rgba(59, 130, 246, 0.2), 0 0 40px rgba(59, 130, 246, 0.05);
+    outline: none;
+}
+
+.cert-card:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+.cert-card:hover::before {
+    opacity: 1;
+}
+
+.cert-card:hover::after {
+    background: #18181c;
+}
+
+/* Cert roll-in animation fill mode */
+.cert-card.roll-in-left,
+.cert-card.roll-in-right,
+.cert-card.roll-in-center {
+    animation-fill-mode: forwards;
+}
+
+/* Glow orb behind the card icon */
+.cert-card .cert-glow {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.12), transparent 70%);
+    top: -50px;
+    right: -80px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+}
+
+.cert-card:hover .cert-glow {
+    opacity: 1;
+}
+
+/* Shine overlay that sweeps across the card on hover */
+.cert-card .cert-shine {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(105deg, transparent 30%, rgba(255, 255, 255, 0.03) 45%, rgba(255, 255, 255, 0.06) 50%, rgba(255, 255, 255, 0.03) 55%, transparent 70%);
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
+    pointer-events: none;
+    border-radius: var(--radius-lg);
+}
+
+.cert-card:hover .cert-shine {
+    transform: translateX(100%);
+}
+
+/* Top accent line that widens on hover */
+.cert-card .cert-accent-line {
+    position: absolute;
+    top: 0;
+    left: 20%;
+    right: 20%;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    border-radius: 0 0 3px 3px;
+    opacity: 0.4;
+    transition: opacity 0.3s ease, left 0.4s ease, right 0.4s ease;
+}
+
+.cert-card:hover .cert-accent-line {
+    opacity: 1;
+    left: 10%;
+    right: 10%;
+}
+
+/* Certificate number badge (e.g. "01") */
+.cert-card .cert-number {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: rgba(59, 130, 246, 0.25);
+    letter-spacing: 1px;
+    font-family: monospace;
+}
+
+.cert-icon {
+    width: 72px;
+    height: 72px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.18), rgba(59, 130, 246, 0.04));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    color: var(--accent);
+    margin-bottom: 20px;
+    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.5s ease, background 0.4s ease;
+    border: 1px solid rgba(59, 130, 246, 0.12);
+    position: relative;
+}
+
+/* Conic glow ring around icon on hover */
+.cert-icon::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 22px;
+    background: conic-gradient(from 0deg, transparent, rgba(59, 130, 246, 0.2), transparent 70%);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    z-index: -1;
+}
+
+.cert-card:hover .cert-icon {
+    transform: scale(1.12) rotate(-6deg);
+    box-shadow: 0 0 40px rgba(59, 130, 246, 0.25), 0 0 80px rgba(59, 130, 246, 0.1);
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.25), rgba(59, 130, 246, 0.08));
+}
+
+.cert-card:hover .cert-icon::after {
+    opacity: 1;
+}
+
+.cert-card h3 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    letter-spacing: -0.3px;
+    position: relative;
+}
+
+.cert-card p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+/* "View" button at bottom of cert card */
+.cert-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--accent);
+    padding: 8px 20px;
+    border-radius: 20px;
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    background: rgba(59, 130, 246, 0.06);
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+}
+
+/* Shine sweep inside the badge */
+.cert-badge::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(105deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.5s ease;
+}
+
+.cert-card:hover .cert-badge::before {
+    transform: translateX(100%);
+}
+
+.cert-card:hover .cert-badge {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+    gap: 10px;
+    box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
+}
+
+.cert-badge i {
+    font-size: 0.7rem;
+    transition: transform 0.3s ease;
+}
+
+.cert-card:hover .cert-badge i {
+    transform: translateX(5px);
+}
+
+/* ============================================================
+   CERT ROLL-IN ANIMATIONS — used by IntersectionObserver
+   ============================================================ */
+.cert-card.roll-in-left {
+    animation: certRollLeft 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.cert-card.roll-in-right {
+    animation: certRollRight 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.cert-card.roll-in-center {
+    animation: certRollCenter 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.cert-card.roll-in-left ~ .cert-card.roll-in-none,
+.cert-card.roll-in-right ~ .cert-card.roll-in-none,
+.cert-card.roll-in-center ~ .cert-card.roll-in-none {
+    display: none;
+}
+
+@keyframes certRollLeft {
+    0% { transform: translateX(-200%) rotate(-220deg) scale(0.5); opacity: 0; }
+    45% { transform: translateX(12%) rotate(10deg) scale(1.02); opacity: 1; }
+    65% { transform: translateX(-5%) rotate(-4deg); }
+    80% { transform: translateX(2%) rotate(1deg); }
+    100% { transform: translateX(0) rotate(0deg) scale(1); opacity: 1; }
+}
+
+@keyframes certRollRight {
+    0% { transform: translateX(200%) rotate(220deg) scale(0.5); opacity: 0; }
+    45% { transform: translateX(-12%) rotate(-10deg) scale(1.02); opacity: 1; }
+    65% { transform: translateX(5%) rotate(4deg); }
+    80% { transform: translateX(-2%) rotate(-1deg); }
+    100% { transform: translateX(0) rotate(0deg) scale(1); opacity: 1; }
+}
+
+@keyframes certRollCenter {
+    0% { transform: translateY(120%) rotateX(100deg) scale(0.4); opacity: 0; }
+    45% { transform: translateY(-8%) rotateX(-5deg) scale(1.02); opacity: 1; }
+    65% { transform: translateY(3%); }
+    80% { transform: translateY(-1%); }
+    100% { transform: translateY(0) rotateX(0deg) scale(1); opacity: 1; }
+}
+
+/* ============================================================
+   CONTACT — side-by-side info + call-to-action card
+   ============================================================ */
 .contact {
     background: var(--bg-secondary);
 }
@@ -815,15 +1626,19 @@ section {
     align-items: center;
     gap: 16px;
     padding: 16px 18px;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--glass-border);
     border-radius: var(--radius);
     transition: var(--transition);
 }
 
 .contact-item:hover {
-    border-color: var(--border-hover);
-    background: var(--bg-elevated);
+    border-color: var(--glass-border-hover);
+    background: var(--glass-bg-hover);
+    backdrop-filter: blur(var(--glass-blur-hover));
+    -webkit-backdrop-filter: blur(var(--glass-blur-hover));
 }
 
 .contact-item i {
@@ -860,17 +1675,23 @@ section {
     color: var(--accent);
 }
 
+/* Big CTA card on the right side */
 .contact-cta {
     padding: 36px;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--glass-border);
     border-radius: var(--radius-lg);
     transition: var(--transition);
     text-align: center;
 }
 
 .contact-cta:hover {
-    border-color: var(--border-hover);
+    border-color: var(--glass-border-hover);
+    background: var(--glass-bg-hover);
+    backdrop-filter: blur(var(--glass-blur-hover));
+    -webkit-backdrop-filter: blur(var(--glass-blur-hover));
     box-shadow: var(--shadow);
 }
 
@@ -894,7 +1715,9 @@ section {
     flex-wrap: wrap;
 }
 
-/* footer */
+/* ============================================================
+   FOOTER — simple copyright + social icon links
+   ============================================================ */
 .footer {
     padding: 28px 0;
     border-top: 1px solid var(--border);
@@ -927,8 +1750,17 @@ section {
     color: var(--accent);
 }
 
-/* responsive */
+/* ============================================================
+   RESPONSIVE — 3 breakpoints: 968px, 768px, 480px
+   ============================================================ */
+
+/* ---- Tablets & smaller laptops ---- */
 @media (max-width: 968px) {
+    .certificates-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 24px;
+    }
+
     .hero-name {
         font-size: 2.6rem;
     }
@@ -965,6 +1797,7 @@ section {
     }
 }
 
+/* ---- Mobile (portrait tablets & large phones) ---- */
 @media (max-width: 768px) {
     section {
         padding: 70px 0;
@@ -975,6 +1808,7 @@ section {
         margin-bottom: 40px;
     }
 
+    /* Mobile nav: slide-down menu from top */
     .nav-links {
         position: fixed;
         top: 64px;
@@ -990,7 +1824,7 @@ section {
         transform: translateY(-100%);
         opacity: 0;
         pointer-events: none;
-        transition: var(--transition);
+        transition: transform 0.35s ease, opacity 0.35s ease;
     }
 
     .nav-links.active {
@@ -1042,13 +1876,46 @@ section {
         text-align: center;
     }
 
+    .cover-title {
+        font-size: 2.2rem;
+    }
+
+    .cover-subtitle {
+        font-size: 0.9rem;
+        letter-spacing: 2px;
+    }
+
+    .certificates-grid {
+        gap: 20px;
+    }
+
+    .contact-content {
+        grid-template-columns: 1fr;
+    }
+
     .footer-content {
         flex-direction: column;
         text-align: center;
     }
 }
 
+/* ---- Small phones ---- */
 @media (max-width: 480px) {
+    .cover-title {
+        font-size: 1.6rem;
+        padding: 0 10px;
+    }
+
+    .cover-subtitle {
+        font-size: 0.8rem;
+        letter-spacing: 1.5px;
+        margin-top: 16px;
+    }
+
+    .cover-content {
+        padding: 0 20px;
+    }
+
     .hero-name {
         font-size: 1.7rem;
     }
@@ -1059,6 +1926,15 @@ section {
 
     .hero-tagline {
         font-size: 0.88rem;
+    }
+
+    .hero-status {
+        font-size: 0.75rem;
+        padding: 6px 14px;
+    }
+
+    .hero-content {
+        padding: 0 4px;
     }
 
     .skills-grid {
@@ -1087,7 +1963,143 @@ section {
         height: 160px;
     }
 
-    .contact-cta {
-        padding: 28px 20px;
+    .about-content {
+        text-align: center;
     }
+
+    .about-text p {
+        font-size: 0.95rem;
+        text-align: left;
+    }
+
+    .about-focus {
+        grid-template-columns: 1fr;
+        text-align: left;
+    }
+
+    .about-info {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .info-item {
+        align-items: center;
+    }
+
+    .projects-grid {
+        gap: 20px;
+    }
+
+    .contact-content {
+        gap: 24px;
+    }
+
+    .contact-cta {
+        padding: 24px 16px;
+    }
+
+    .contact-cta h3 {
+        font-size: 1.2rem;
+    }
+
+    .contact-cta p {
+        font-size: 0.88rem;
+    }
+
+    .contact-cta-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .contact-cta-buttons .btn {
+        width: 100%;
+        max-width: 260px;
+        justify-content: center;
+    }
+
+    .contact-item {
+        padding: 12px 14px;
+    }
+
+    .contact-item i {
+        width: 36px;
+        height: 36px;
+        font-size: 0.85rem;
+    }
+
+    /* On small screens, show front + back cards side by side instead of layered */
+    .certificates-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .cert-card-wrapper:has(.cert-card-back) {
+        display: flex;
+        gap: 12px;
+        max-width: none;
+    }
+
+    .cert-card-wrapper:has(.cert-card-back) .cert-card-back,
+    .cert-card-wrapper:has(.cert-card-back) .cert-card {
+        flex: 1;
+        min-width: 0;
+        position: relative;
+        pointer-events: auto;
+        z-index: auto;
+        opacity: 1 !important;
+        margin: 0;
+        transform: none !important;
+    }
+
+    .cert-card-wrapper:has(.cert-card-back) .cert-card-back {
+        position: relative;
+        inset: auto;
+        padding: 40px 16px 30px;
+        background: var(--glass-bg);
+        backdrop-filter: blur(var(--glass-blur));
+        border: 1px solid var(--glass-border);
+        border-radius: var(--radius-lg);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        color: var(--text-primary);
+    }
+
+    .cert-card-wrapper:has(.cert-card-back) .cert-card-back h3 {
+        font-size: 0.85rem;
+        font-weight: 700;
+        margin-bottom: 4px;
+        margin-top: 14px;
+    }
+
+    .cert-card-wrapper:has(.cert-card-back) .cert-card-back p {
+        font-size: 0.75rem;
+        color: var(--text-muted);
+        margin-bottom: 16px;
+        line-height: 1.4;
+    }
+
+    .cert-card-wrapper .cert-card-back:hover {
+        border-color: var(--glass-border-hover) !important;
+        background: var(--glass-bg-hover) !important;
+        transform: translateY(-4px) scale(1.01) !important;
+        box-shadow: 0 12px 30px rgba(59, 130, 246, 0.15) !important;
+    }
+
+    .cert-card-wrapper .cert-card-back:hover .cert-badge {
+        background: var(--accent);
+        color: #fff;
+        border-color: var(--accent);
+        gap: 10px;
+        box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
+    }
+
+    .cert-card-wrapper .cert-card-back:hover .cert-badge i {
+        transform: translateX(5px);
+    }
+
+    .cert-card-wrapper .cert-card-back .cert-icon.icon-sm {
+        width: 52px;
+        height: 52px;
+        font-size: 1.3rem;
+    }
+
 }
