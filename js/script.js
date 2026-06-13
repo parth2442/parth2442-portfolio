@@ -1,30 +1,17 @@
 document.addEventListener('DOMContentLoaded', () => {
-    /*
-     * ================================================================
-     * 1. TOUCH DETECTION
-     *    If we're on a touch device, add a class so CSS can hide
-     *    cursor effects and reduce particle counts for performance.
-     * ================================================================
-     */
+    // touch check
     var isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
     if (isTouch) {
         document.body.classList.add('touch-device');
     }
 
-    /*
-     * ================================================================
-     * 2. STARFIELD / NEBULA CANVAS
-     *    Renders drifting nebula clouds + floating dust particles.
-     *    On desktop, the cursor gently pushes clouds and particles away.
-     * ================================================================
-     */
+    // starfield canvas with nebula and particles
     var starCanvas = document.getElementById('starfield');
     if (starCanvas) {
         var sCtx = starCanvas.getContext('2d');
         var sMouseX = -9999, sMouseY = -9999;
         var MOUSE_RADIUS = 200;
 
-        // --- resize canvas to fill the viewport ---
         function resizeStars() {
             starCanvas.width = window.innerWidth;
             starCanvas.height = window.innerHeight;
@@ -32,16 +19,16 @@ document.addEventListener('DOMContentLoaded', () => {
         resizeStars();
         window.addEventListener('resize', resizeStars);
 
-        // ----- Nebula clouds (big coloured blobs) -----
+        // nebula clouds
         var clouds = [];
         var CLOUD_COUNT = isTouch ? 3 : 6;
         var cloudColors = [
-            '59, 130, 246',   // blue
-            '124, 58, 237',   // purple
-            '236, 72, 153',   // pink
-            '6, 182, 212',    // teal
-            '168, 85, 247',   // violet
-            '59, 130, 246'    // blue
+            '59, 130, 246',
+            '124, 58, 237',
+            '236, 72, 153',
+            '6, 182, 212',
+            '168, 85, 247',
+            '59, 130, 246'
         ];
         for (var ci = 0; ci < CLOUD_COUNT; ci++) {
             clouds.push({
@@ -57,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        // ----- Floating particles / dust (small dots) -----
+        // floating particles
         var particles = [];
         var PARTICLE_COUNT = isTouch ? 50 : 120;
         var particleColors = [
@@ -79,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        // ----- Mouse tracking (desktop only) -----
+        // mouse tracking - desktop only
         if (!isTouch) {
             document.addEventListener('mousemove', function(e) {
                 sMouseX = e.clientX;
@@ -92,12 +79,12 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        // ----- Animation loop -----
+        // animation loop
         function animateNebula() {
             sCtx.clearRect(0, 0, starCanvas.width, starCanvas.height);
             var time = Date.now() / 1000;
 
-            // Draw nebula clouds
+            // draw clouds
             for (var ci = 0; ci < clouds.length; ci++) {
                 var c = clouds[ci];
                 c.x += c.speedX + Math.sin(time * 0.3 + c.phase) * 0.1;
@@ -107,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (c.y < -300) c.y = starCanvas.height + 300;
                 if (c.y > starCanvas.height + 300) c.y = -300;
 
-                // cursor gently pushes clouds away
+                // cursor push effect
                 if (!isTouch) {
                     var cdx = c.x - sMouseX;
                     var cdy = c.y - sMouseY;
@@ -130,7 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 sCtx.fill();
             }
 
-            // Draw particles
+            // draw particles
             for (var pi = 0; pi < particles.length; pi++) {
                 var p = particles[pi];
                 p.x += p.speedX;
@@ -140,7 +127,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (p.y < 0) p.y = starCanvas.height;
                 if (p.y > starCanvas.height) p.y = 0;
 
-                // cursor pushes particles away
                 if (!isTouch) {
                     var pdx = p.x - sMouseX;
                     var pdy = p.y - sMouseY;
@@ -165,14 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
         animateNebula();
     }
 
-    /*
-     * ================================================================
-     * 3. CUSTOM CURSOR
-     *    Dot follows mouse exactly; ring lags behind smoothly.
-     *    Enlarges when hovering over interactive elements.
-     *    Hidden when mouse leaves the window.
-     * ================================================================
-     */
+    // custom cursor - dot follows mouse, ring lags behind
     if (!isTouch) {
         var cursorDot = document.querySelector('.cursor-dot');
         var cursorRing = document.querySelector('.cursor-ring');
@@ -203,7 +182,7 @@ document.addEventListener('DOMContentLoaded', () => {
             cursorRing.classList.remove('hide');
         });
 
-        // Enlarge ring on hover over clickable elements
+        // enlarge ring over clickable stuff
         var hoverTargets = document.querySelectorAll('a, button, .cert-card-wrapper, .project-card, .btn, .skill-card, .inspire-card');
         hoverTargets.forEach(function(el) {
             el.addEventListener('mouseenter', function() {
@@ -215,13 +194,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    /*
-     * ================================================================
-     * 4. MAGNETIC BUTTONS
-     *    Buttons/links slightly move toward the cursor on hover,
-     *    creating a "magnetic pull" effect.
-     * ================================================================
-     */
+    // magnetic buttons - move toward cursor on hover
     if (!isTouch) {
         var magBtns = document.querySelectorAll('.btn, .nav-link, .footer-socials a, .social-link');
         for (var m = 0; m < magBtns.length; m++) {
@@ -246,13 +219,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    /*
-     * ================================================================
-     * 5. 3D TILT ON PROJECT CARDS
-     *    Cards rotate slightly based on cursor position inside them,
-     *    with a lift effect (translateY + scale).
-     * ================================================================
-     */
+    // 3d tilt on project cards
     if (!isTouch) {
         var tiltCards = document.querySelectorAll('.project-card');
         for (var t = 0; t < tiltCards.length; t++) {
@@ -280,12 +247,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    /*
-     * ================================================================
-     * 6. COVER CURTAIN
-     *    Click anywhere on the cover to slide it up and reveal content.
-     * ================================================================
-     */
+    // cover curtain - click to enter
     const cover = document.getElementById('cover');
     if (cover) {
         cover.addEventListener('click', () => {
@@ -293,13 +255,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    /*
-     * ================================================================
-     * 7. DOM REFERENCES
-     *    Collect all the elements we'll need for nav, scroll effects,
-     *    typing animation, and staggered reveals.
-     * ================================================================
-     */
+    // grab dom refs
     const navbar = document.querySelector('.navbar');
     const hamburger = document.getElementById('hamburger');
     const navLinks = document.getElementById('navLinks');
@@ -309,21 +265,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const revealElements = document.querySelectorAll('.section-hidden');
     const staggerGrids = document.querySelectorAll('.skills-grid, .projects-grid');
 
-    // ----- Navbar background becomes more opaque on scroll -----
+    // navbar bg on scroll
     function updateNavbar() {
         navbar.classList.toggle('scrolled', window.scrollY > 50);
     }
     window.addEventListener('scroll', updateNavbar, { passive: true });
     updateNavbar();
 
-    // ----- Mobile hamburger menu toggle -----
+    // mobile menu toggle
     hamburger.addEventListener('click', () => {
         const active = navLinks.classList.toggle('active');
         hamburger.classList.toggle('active');
         hamburger.setAttribute('aria-expanded', active);
     });
 
-    // Close mobile menu when a nav link is clicked
     document.querySelectorAll('.nav-link').forEach(link => {
         link.addEventListener('click', () => {
             navLinks.classList.remove('active');
@@ -332,7 +287,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // ----- Highlight current section in nav on scroll -----
+    // active nav link on scroll
     function updateActiveLink() {
         let current = '';
         sections.forEach(section => {
@@ -349,13 +304,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     window.addEventListener('scroll', updateActiveLink, { passive: true });
 
-    /*
-     * ================================================================
-     * 8. HERO STAGGER ENTRANCE
-     *    Each child of .hero-content fades in with a different delay,
-     *    creating a wave-like reveal effect.
-     * ================================================================
-     */
+    // hero stagger entrance
     if (heroContent) {
         const children = heroContent.children;
         const delays = [0, 80, 150, 250, 380, 500, 650];
@@ -365,13 +314,7 @@ document.addEventListener('DOMContentLoaded', () => {
         requestAnimationFrame(() => heroContent.classList.add('visible'));
     }
 
-    /*
-     * ================================================================
-     * 9. SECTION REVEAL ON SCROLL
-     *    Uses IntersectionObserver — sections fade + slide up when
-     *    they enter the viewport. Unobserves after reveal to save perf.
-     * ================================================================
-     */
+    // reveal sections on scroll
     const revealObserver = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
             if (entry.isIntersecting) {
@@ -382,13 +325,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { threshold: 0.08 });
     revealElements.forEach(el => revealObserver.observe(el));
 
-    /*
-     * ================================================================
-     * 10. TYPING ANIMATION
-     *     Cycles through a list of roles, typing and deleting each one
-     *     character by character with varying speed.
-     * ================================================================
-     */
+    // typing effect
     const roles = [
         'Python Full-Stack Developer',
         'Ethical Hacker',
@@ -413,7 +350,6 @@ document.addEventListener('DOMContentLoaded', () => {
             typeSpeed = 80;
         }
 
-        // Pause at end of word, then start deleting
         if (!isDeleting && charIndex === currentRole.length) {
             typeSpeed = 1500;
             isDeleting = true;
@@ -427,14 +363,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     typeEffect();
 
-    /*
-     * ================================================================
-     * 11. STAGGER CARD ENTRANCE ON SCROLL
-     *     Cards inside skills-grid and projects-grid appear one by one
-     *     with a delay. When scrolling away, they disappear in reverse.
-     *     Timer state is managed per-grid to avoid memory leaks.
-     * ================================================================
-     */
+    // stagger card entrance on scroll
     const staggerState = new Map();
 
     staggerGrids.forEach(grid => {
@@ -457,7 +386,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const state = staggerState.get(grid);
             if (!state) return;
 
-            // Clear any pending timers before setting new ones
             state.timers.forEach(t => clearTimeout(t));
             state.timers = [];
 
@@ -466,7 +394,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const total = cards.length;
 
             if (state.visible) {
-                // Show cards one by one (stagger in)
                 cards.forEach((card, i) => {
                     var delay = card.classList.contains('project-card') ? i * 200 : i * 120;
                     const t = setTimeout(() => {
@@ -481,7 +408,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     state.timers.push(t);
                 });
             } else {
-                // Hide cards in reverse order (stagger out)
                 cards.forEach((card, i) => {
                     const t = setTimeout(() => {
                         if (card.classList.contains('project-card')) {
@@ -500,13 +426,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     staggerGrids.forEach(grid => staggerObserver.observe(grid));
 
-    /*
-     * ================================================================
-     * 12. CERTIFICATE ENTRANCE ANIMATION
-     *     Each cert card rolls in from left, right, or center
-     *     depending on its data-side attribute.
-     * ================================================================
-     */
+    // cert card roll-in animation
     const certCards = document.querySelectorAll('.cert-card');
     const certObserver = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
@@ -527,20 +447,13 @@ document.addEventListener('DOMContentLoaded', () => {
     certCards.forEach(function(card) {
         card.style.opacity = '0';
         certObserver.observe(card);
-        // Remove animation class once done so cards stay visible
         card.addEventListener('animationend', function() {
             card.classList.remove('roll-in-left', 'roll-in-right', 'roll-in-center');
             card.style.opacity = '1';
         }, { once: true });
     });
 
-    /*
-     * ================================================================
-     * 13. BACK CARDS FADE-IN
-     *     The hidden "back" cards in the certificates section
-     *     fade in after a slight delay for a layered reveal effect.
-     * ================================================================
-     */
+    // back cards fade in
     var backCards = document.querySelectorAll('.cert-card-back');
     backCards.forEach(function(card, i) {
         card.style.opacity = '0';
@@ -549,27 +462,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 400 + i * 200);
     });
 
-    /*
-     * ================================================================
-     * 14. CERT FOCUS TOGGLE
-     *     Clicking a cert wrapper focuses it (adds .show-back) and
-     *     blurs the rest. Clicking the same wrapper again unfocuses.
-     *     Mouse leave also removes focus.
-     * ================================================================
-     */
+    // cert focus toggle
     var wrappers = document.querySelectorAll('.cert-card-wrapper');
     for (var i = 0; i < wrappers.length; i++) {
         (function(w) {
             w.addEventListener('click', function(e) {
-                // Don't toggle if user clicked the back card or the badge
                 if (e.target.closest('.cert-card-back')) return;
                 if (e.target.closest('.cert-badge')) return;
                 var isActive = w.classList.contains('show-back');
-                // Remove show-back from all wrappers
                 for (var j = 0; j < wrappers.length; j++) {
                     wrappers[j].classList.remove('show-back');
                 }
-                // Toggle current wrapper
                 if (!isActive) {
                     w.classList.add('show-back');
                 }
@@ -580,13 +483,7 @@ document.addEventListener('DOMContentLoaded', () => {
         })(wrappers[i]);
     }
 
-    /*
-     * ================================================================
-     * 15. BLUR PDF LINKS AFTER CLICK
-     *     Removes focus ring from cert badge/back links after clicking,
-     *     so the blue ring doesn't persist when returning from PDF.
-     * ================================================================
-     */
+    // blur links after click
     var pdfLinks = document.querySelectorAll('.cert-badge, .cert-card-back');
     pdfLinks.forEach(function(link) {
         link.addEventListener('click', function() {

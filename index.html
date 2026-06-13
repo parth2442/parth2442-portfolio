@@ -1,11 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- ===== Meta tags — tells browsers & social platforms about the page ===== -->
+    <!-- meta -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!-- TODO: Before deploying, replace https://parth2442.github.io with your actual domain -->
 
     <title>Parth Raut | Developer & Cybersecurity Enthusiast</title>
     <meta name="description" content="Parth Raut — builds things with Python, makes Discord bots, pokes at security stuff. Portfolio and projects.">
@@ -13,7 +11,7 @@
     <meta name="author" content="Parth Sachin Raut">
     <meta name="robots" content="index, follow">
 
-    <!-- Open Graph — controls how links look when shared on social media -->
+    <!-- opengraph -->
     <meta property="og:title" content="Parth Raut | Developer & Cybersecurity Enthusiast">
     <meta property="og:description" content="Parth Raut — builds things with Python, makes Discord bots, pokes at security stuff.">
     <meta property="og:type" content="website">
@@ -24,33 +22,31 @@
     <meta property="og:locale" content="en_IN">
     <meta property="og:site_name" content="Parth Raut Portfolio">
 
-    <!-- Twitter card — how links look when shared on Twitter/X -->
+    <!-- twitter card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Parth Raut | Developer">
     <meta name="twitter:description" content="Python developer, Discord bots, cybersecurity experiments.">
     <meta name="twitter:image" content="favicon.svg">
 
-    <!-- Icons & performance -->
+    <!-- favicon + preconnect -->
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="canonical" href="https://parth2442.github.io">
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
 
-    <!-- External styles: Font Awesome for icons, then my own stylesheet -->
+    <!-- font awesome + my css -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <!-- ===== Background effects — floating orbs + starfield canvas ===== -->
+    <!-- background orbs + stars -->
     <div class="bg-canvas"><div class="orb3"></div></div>
     <canvas id="starfield"></canvas>
 
-    <!-- ===== Custom cursor elements (hidden on touch devices via JS) ===== -->
+    <!-- custom cursor -->
     <div class="cursor-ring"></div>
     <div class="cursor-dot"></div>
 
-    <!-- ============================================================
-         COVER / CURTAIN — the full-screen intro that slides up on click
-         ============================================================ -->
+    <!-- landing cover — click to enter -->
     <div id="cover">
         <div class="cover-bg">
             <div class="cover-bg-grid"></div>
@@ -61,9 +57,7 @@
         </div>
     </div>
 
-    <!-- ============================================================
-         HEADER / NAVBAR — fixed top bar with logo + navigation links
-         ============================================================ -->
+    <!-- navbar -->
     <header>
         <nav class="navbar" aria-label="Main navigation">
             <div class="container">
@@ -84,11 +78,8 @@
         </nav>
     </header>
 
-    <!-- ============================================================
-         MAIN CONTENT
-         ============================================================ -->
     <main>
-        <!-- ===== HERO SECTION — the big intro with name, tagline, CTAs ===== -->
+        <!-- hero -->
         <section id="home" class="hero" aria-label="Hero introduction">
             <div class="hero-glow" aria-hidden="true"></div>
             <div class="container">
@@ -111,7 +102,7 @@
             </div>
         </section>
 
-        <!-- ===== ABOUT SECTION — photo, intro text, focus areas, quick info ===== -->
+        <!-- about -->
         <section id="about" class="about section" aria-label="About me">
             <div class="container section-hidden" id="aboutContainer">
                 <h2 class="section-title">About <span class="accent">Me</span></h2>
@@ -157,7 +148,7 @@
             </div>
         </section>
 
-        <!-- ===== SKILLS SECTION — tech stack cards with icons ===== -->
+        <!-- skills -->
         <section id="skills" class="skills section" aria-label="Technical skills">
             <div class="container section-hidden" id="skillsContainer">
                 <h2 class="section-title">Technical <span class="accent">Skills</span></h2>
@@ -198,7 +189,7 @@
             </div>
         </section>
 
-        <!-- ===== PROJECTS SECTION — featured project cards with tags ===== -->
+        <!-- projects -->
         <section id="projects" class="projects section" aria-label="Featured projects">
             <div class="container section-hidden" id="projectsContainer">
                 <h2 class="section-title">Featured <span class="accent">Projects</span></h2>
@@ -268,10 +259,7 @@
             </div>
         </section>
 
-        <!-- ============================================================
-             CERTIFICATES SECTION — skill badges with roll-in animations
-             Cards have front/back layering (CSS + JS handles the interaction)
-             ============================================================ -->
+        <!-- certificates -->
         <section id="certificates" class="certificates section" aria-label="Verified Skills">
             <div class="container section-hidden" id="certificatesContainer">
                 <h2 class="section-title"><span class="accent">Verified</span> Skills</h2>
@@ -406,7 +394,7 @@
             </div>
         </section>
 
-        <!-- ===== INSPIRE AWARD — district level selection ka certificate ===== -->
+        <!-- inspire award -->
         <section id="inspire" class="certificates section" aria-label="INSPIRE Award">
             <div class="container section-hidden" id="inspireContainer">
                 <h2 class="section-title"><span class="accent">INSPIRE</span> Award</h2>
@@ -425,7 +413,7 @@
             </div>
         </section>
 
-        <!-- ===== CONTACT SECTION — email, social links, call-to-action ===== -->
+        <!-- contact -->
         <section id="contact" class="contact section" aria-label="Contact information">
             <div class="container section-hidden" id="contactContainer">
                 <h2 class="section-title">Get In <span class="accent">Touch</span></h2>
@@ -480,9 +468,7 @@
         </section>
     </main>
 
-    <!-- ============================================================
-         FOOTER — copyright + social links
-         ============================================================ -->
+    <!-- footer -->
     <footer class="footer" role="contentinfo">
         <div class="container">
             <div class="footer-content">
@@ -497,7 +483,7 @@
         </div>
     </footer>
 
-    <!-- Script — deferred so it runs after the DOM is ready -->
+    <!-- js -->
     <script src="js/script.js" defer></script>
 </body>
 </html>
