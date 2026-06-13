@@ -30,7 +30,7 @@
     transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease, background 0.3s ease;
 }
 
-/* Ring grows & gets a subtle fill when hovering over clickable elements */
+/* ring gets bigger on hover over buttons/links */
 .cursor-ring.hover {
     width: 56px;
     height: 56px;
@@ -55,7 +55,7 @@ body:not(.touch-device) .skill-card {
     cursor: none;
 }
 
-/* design tokens */
+/* design tokens - learned about CSS variables from Kevin Powell yt */
 :root {
     --bg-primary: #0a0a0a;
     --bg-secondary: #0e0e10;
@@ -96,7 +96,7 @@ body:not(.touch-device) .skill-card {
     cursor: pointer;
 }
 
-/* Deep gradient background with floating orbs */
+/* gradient bg with floating orbs */
 .cover-bg {
     position: absolute;
     inset: 0;
@@ -403,7 +403,7 @@ section {
     color: var(--accent);
 }
 
-/* navbar */
+/* navbar - glass effect from a codepen */
 .navbar {
     position: fixed;
     top: 0;
@@ -745,7 +745,7 @@ section {
     position: relative;
 }
 
-/* Spinning gradient border on hover (achieved with mask trick) */
+/* gradient border using mask trick - found this on CSSTricks blog */
 .image-frame::after {
     content: '';
     position: absolute;
@@ -880,7 +880,7 @@ section {
     outline-offset: 2px;
 }
 
-/* Glowing gradient border that appears on hover */
+/* border glow on hover */
 .skill-card::after {
     content: '';
     position: absolute;
@@ -1182,7 +1182,7 @@ section {
     margin: 0 auto;
 }
 
-/* When hovering one card, fade + blur the siblings (focus effect) */
+/* blur other cards when one is hovered */
 .certificates-grid:has(.cert-card-wrapper:hover) .cert-card-wrapper:not(:hover) {
     opacity: 0.35;
     filter: blur(1.5px);
@@ -1204,7 +1204,7 @@ section {
   cursor: pointer;
 }
 
-/* ===== BACK CARD — sits behind the front, initially offset ===== */
+/* back card - offset behind front */
 .cert-card-back {
   position: absolute;
   inset: 0;
@@ -1228,7 +1228,7 @@ section {
   pointer-events: none;
 }
 
-/* On hover or .show-back, slide back card further left to reveal */
+/* on hover, back card slides left more */
 .cert-card-wrapper:hover .cert-card-back,
 .cert-card-wrapper.show-back .cert-card-back {
   transform: rotate(-8deg) translateX(-200px) translateY(10px) scale(0.95);
@@ -1250,7 +1250,7 @@ section {
   margin-bottom: 0;
 }
 
-/* ===== FRONT CARD — sits on top, slides right on hover ===== */
+/* front card slides right on hover */
 .cert-card-wrapper .cert-card {
   position: relative;
   z-index: 1;
@@ -1264,7 +1264,7 @@ section {
   box-shadow: 0 20px 60px rgba(59, 130, 246, 0.25);
 }
 
-/* Prevent nested hover on front card from overriding the wrapper animation */
+/* stop front card hover from breaking wrapper animation */
 .cert-card-wrapper .cert-card:hover {
   transform: none !important;
   box-shadow: none !important;
@@ -1289,7 +1289,7 @@ section {
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
-/* Animated rotating gradient border (conic) */
+/* rotating gradient border - codepen by cruip had this */
 .cert-card::before {
     content: '';
     position: absolute;
@@ -1307,7 +1307,7 @@ section {
     100% { transform: rotate(360deg); }
 }
 
-/* Inner fill that sits on top of the conic gradient */
+/* inner fill over the conic border */
 .cert-card::after {
     content: '';
     position: absolute;
@@ -1345,7 +1345,7 @@ section {
     animation-fill-mode: forwards;
 }
 
-/* Glow orb behind the card icon */
+/* glow behind the icon */
 .cert-card .cert-glow {
     position: absolute;
     width: 200px;
@@ -1363,7 +1363,7 @@ section {
     opacity: 1;
 }
 
-/* Shine overlay that sweeps across the card on hover */
+/* shine sweep across the card */
 .cert-card .cert-shine {
     position: absolute;
     inset: 0;
@@ -1425,7 +1425,7 @@ section {
     position: relative;
 }
 
-/* Conic glow ring around icon on hover */
+/* conic glow ring around icon */
 .cert-icon::after {
     content: '';
     position: absolute;
@@ -1480,7 +1480,7 @@ section {
     text-decoration: none;
 }
 
-/* Shine sweep inside the badge */
+/* shine sweep in badge */
 .cert-badge::before {
     content: '';
     position: absolute;
