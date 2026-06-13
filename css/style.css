@@ -1608,6 +1608,124 @@ section {
 }
 
 /* ============================================================
+   INSPIRE AWARD — special achievement showcase card
+   ============================================================ */
+.inspire-showcase {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.inspire-card {
+    position: relative;
+    max-width: 620px;
+    width: 100%;
+    padding: 48px 40px;
+    background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-elevated) 100%);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    text-align: center;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.inspire-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-6px);
+    box-shadow: 0 20px 60px rgba(59, 130, 246, 0.15);
+}
+
+.inspire-glow {
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at center, rgba(255, 215, 0, 0.06) 0%, transparent 50%);
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+}
+
+.inspire-card:hover .inspire-glow {
+    opacity: 0.8;
+}
+
+.inspire-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 20px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.12), rgba(255, 215, 0, 0.05));
+    border: 2px solid rgba(255, 215, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    color: #ffd700;
+    transition: all 0.3s ease;
+}
+
+.inspire-card:hover .inspire-icon {
+    transform: scale(1.1) rotate(-10deg);
+    border-color: rgba(255, 215, 0, 0.4);
+    box-shadow: 0 0 40px rgba(255, 215, 0, 0.15);
+}
+
+.inspire-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    background: rgba(255, 215, 0, 0.08);
+    border: 1px solid rgba(255, 215, 0, 0.2);
+    color: #ffd700;
+    margin-bottom: 16px;
+    letter-spacing: 0.3px;
+}
+
+.inspire-card h3 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    letter-spacing: -0.3px;
+}
+
+.inspire-card p {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    margin-bottom: 24px;
+    line-height: 1.7;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.inspire-card .btn {
+    background: linear-gradient(135deg, #ffd700, #f0a500);
+    color: #1a1a1a;
+    font-weight: 700;
+    border: none;
+}
+
+.inspire-card .btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(255, 215, 0, 0.3);
+}
+
+.inspire-card .btn i {
+    transition: transform 0.3s ease;
+}
+
+.inspire-card .btn:hover i {
+    transform: translateX(4px);
+}
+
+
+
+/* ============================================================
    CONTACT — side-by-side info + call-to-action card
    ============================================================ */
 .contact {

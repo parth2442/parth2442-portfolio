@@ -204,7 +204,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // Enlarge ring on hover over clickable elements
-        var hoverTargets = document.querySelectorAll('a, button, .cert-card-wrapper, .project-card, .btn, .skill-card');
+        var hoverTargets = document.querySelectorAll('a, button, .cert-card-wrapper, .project-card, .btn, .skill-card, .inspire-card');
         hoverTargets.forEach(function(el) {
             el.addEventListener('mouseenter', function() {
                 cursorRing.classList.add('hover');
