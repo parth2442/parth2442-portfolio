@@ -970,8 +970,8 @@ section {
    Each card has a different --float-delay so they don't sync
    ============================================================ */
 @keyframes glassFloat {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-4px); }
+    0%, 100% { transform: translateY(0px) translateZ(0); }
+    50% { transform: translateY(-4px) translateZ(0); }
 }
 
 .skill-card, .project-card, .contact-item, .contact-cta {
@@ -1003,28 +1003,31 @@ section {
 
 /* ============================================================
    PROJECT CARD ROLL-IN ANIMATIONS — used by the stagger observer
+   translateZ(0) forces GPU compositing so the animation stays smooth
    ============================================================ */
 @keyframes rollInLeft {
-    0% { transform: translateX(-150%) rotate(-180deg); opacity: 0; }
-    50% { transform: translateX(10%) rotate(8deg); opacity: 1; }
-    70% { transform: translateX(-4%) rotate(-3deg); }
-    85% { transform: translateX(2%) rotate(1deg); }
-    100% { transform: translateX(0) rotate(0deg); opacity: 1; }
+    0% { transform: translateX(-150%) rotate(-180deg) translateZ(0); opacity: 0; }
+    50% { transform: translateX(10%) rotate(8deg) translateZ(0); opacity: 1; }
+    70% { transform: translateX(-4%) rotate(-3deg) translateZ(0); }
+    85% { transform: translateX(2%) rotate(1deg) translateZ(0); }
+    100% { transform: translateX(0) rotate(0deg) translateZ(0); opacity: 1; }
 }
 
 @keyframes rollInRight {
-    0% { transform: translateX(150%) rotate(180deg); opacity: 0; }
-    50% { transform: translateX(-10%) rotate(-8deg); opacity: 1; }
-    70% { transform: translateX(4%) rotate(3deg); }
-    85% { transform: translateX(-2%) rotate(-1deg); }
-    100% { transform: translateX(0) rotate(0deg); opacity: 1; }
+    0% { transform: translateX(150%) rotate(180deg) translateZ(0); opacity: 0; }
+    50% { transform: translateX(-10%) rotate(-8deg) translateZ(0); opacity: 1; }
+    70% { transform: translateX(4%) rotate(3deg) translateZ(0); }
+    85% { transform: translateX(-2%) rotate(-1deg) translateZ(0); }
+    100% { transform: translateX(0) rotate(0deg) translateZ(0); opacity: 1; }
 }
 
 .project-card.roll-left {
+    will-change: transform, opacity;
     animation: rollInLeft 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
 .project-card.roll-right {
+    will-change: transform, opacity;
     animation: rollInRight 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
@@ -1060,6 +1063,9 @@ section {
     overflow: hidden;
     transform-style: preserve-3d;
     will-change: transform;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    transform: translateZ(0);
 }
 
 /* Animated top accent line that expands on hover */
