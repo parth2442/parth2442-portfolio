@@ -182,7 +182,7 @@ document.addEventListener('DOMContentLoaded', () => {
             cursorRing.classList.remove('hide');
         });
 
-        // enlarge ring over clickable stuff
+        // enlarge ring on hover
         var hoverTargets = document.querySelectorAll('a, button, .cert-card-wrapper, .project-card, .btn, .skill-card, .inspire-card');
         hoverTargets.forEach(function(el) {
             el.addEventListener('mouseenter', function() {

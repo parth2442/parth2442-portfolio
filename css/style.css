@@ -30,7 +30,7 @@
     transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease, background 0.3s ease;
 }
 
-/* ring gets bigger on hover over buttons/links */
+/* ring bigger on hover */
 .cursor-ring.hover {
     width: 56px;
     height: 56px;
@@ -38,13 +38,13 @@
     background: rgba(59, 130, 246, 0.06);
 }
 
-/* Hide cursor when mouse leaves the window entirely */
+/* hide on mouseleave */
 .cursor-ring.hide,
 .cursor-dot.hide {
     opacity: 0;
 }
 
-/* On desktop (non-touch), hide the native cursor over interactive elements */
+/* hide cursor on desktop */
 body:not(.touch-device) a,
 body:not(.touch-device) button,
 body:not(.touch-device) .cert-card-wrapper,
@@ -105,7 +105,7 @@ body:not(.touch-device) .skill-card {
     overflow: hidden;
 }
 
-/* Subtle grid overlay on the cover background */
+/* grid overlay */
 .cover-bg-grid {
     position: absolute;
     inset: 0;
@@ -116,7 +116,7 @@ body:not(.touch-device) .skill-card {
     z-index: 0;
 }
 
-/* Two animated glowing orbs behind the cover text */
+/* animated orbs behind text */
 .cover-bg::before {
     content: '';
     position: absolute;
@@ -151,12 +151,12 @@ body:not(.touch-device) .skill-card {
     100% { transform: translate(-80px, -50px) scale(0.95); }
 }
 
-/* When user clicks, the whole cover slides upward out of view */
+/* slide up on click */
 #cover.open {
     transform: translateY(-100%);
 }
 
-/* Cover text fades in slightly after page load */
+/* fade in on load */
 .cover-content {
     text-align: center;
     opacity: 0;
@@ -291,7 +291,7 @@ body {
     mix-blend-mode: screen;
 }
 
-/* Subtle film-grain noise overlay across everything */
+/* noise overlay */
 body::before {
     content: '';
     position: fixed;
@@ -333,7 +333,7 @@ section {
     letter-spacing: -0.02em;
 }
 
-/* Underline accent bar below each section title */
+/* accent underline */
 .section-title::after {
     content: '';
     display: block;
@@ -417,7 +417,7 @@ section {
     transition: border-color 0.25s ease, background 0.25s ease;
 }
 
-/* Slightly more opaque when scrolled past hero */
+/* more opaque on scroll */
 .navbar.scrolled {
     background: rgba(10, 10, 10, 0.92);
     border-bottom-color: var(--glass-border-hover);
@@ -455,7 +455,7 @@ section {
     padding: 4px 0;
 }
 
-/* Animated underline on hover / active */
+/* underline on hover */
 .nav-link::after {
     content: '';
     position: absolute;
@@ -478,7 +478,7 @@ section {
     width: 100%;
 }
 
-/* Hamburger icon (hidden on desktop, shown on mobile) */
+/* hamburger - hidden on desktop */
 .hamburger {
     display: none;
     flex-direction: column;
@@ -505,7 +505,7 @@ section {
     border-radius: 2px;
 }
 
-/* When hamburger is active (menu open), animate into X shape */
+/* hamburger to X */
 .hamburger.active span:nth-child(1) {
     transform: rotate(45deg) translate(5px, 5px);
 }
@@ -544,7 +544,7 @@ section {
     background: linear-gradient(180deg, var(--bg-primary) 0%, #0b0d14 50%, var(--bg-primary) 100%);
 }
 
-/* Central glow behind the hero text */
+/* glow behind hero */
 .hero-glow {
     position: absolute;
     top: 50%;
@@ -561,7 +561,7 @@ section {
     position: relative;
 }
 
-/* Green "available" status pill */
+/* status pill */
 .hero-status {
     display: inline-flex;
     align-items: center;
@@ -577,7 +577,7 @@ section {
     letter-spacing: 0.2px;
 }
 
-/* Animated green dot in the status pill */
+/* green dot pulse */
 .hero-status::before {
     content: '';
     width: 6px;
@@ -600,7 +600,7 @@ section {
     letter-spacing: 0.3px;
 }
 
-/* Gradient text for the name */
+/* gradient name */
 .hero-name {
     font-size: 3.2rem;
     font-weight: 800;
@@ -626,7 +626,7 @@ section {
     font-weight: 600;
 }
 
-/* Blinking cursor for the typing animation */
+/* blink cursor */
 .cursor {
     color: var(--accent);
     animation: blink 0.7s infinite;
@@ -731,7 +731,7 @@ section {
     justify-content: center;
 }
 
-/* Circular profile image frame with hover glow */
+/* profile img frame */
 .image-frame {
     width: 260px;
     height: 260px;
@@ -785,7 +785,7 @@ section {
     line-height: 1.8;
 }
 
-/* Focus areas grid — 2x2 mini badges */
+/* focus grid */
 .about-focus {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -819,7 +819,7 @@ section {
     flex-shrink: 0;
 }
 
-/* Quick info grid (Name, Role, From, Status) */
+/* info grid */
 .about-info {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -950,7 +950,7 @@ section {
 .project-card:nth-child(3) { --float-delay: 1.2; }
 .project-card:nth-child(4) { --float-delay: 1.8; }
 
-/* Pause float animation on hover to avoid transform conflicts */
+/* pause float on hover */
 .skill-card:hover,
 .project-card:hover,
 .contact-item:hover,
@@ -996,7 +996,7 @@ section {
     gap: 20px;
 }
 
-/* Last card spans full width (the "Featured" one) */
+/* last card full width */
 .project-card:last-child {
     grid-column: 1 / -1;
 }
@@ -1020,7 +1020,7 @@ section {
     transform: translateZ(0);
 }
 
-/* Animated top accent line that expands on hover */
+/* accent line on hover */
 .project-card::before {
     content: '';
     position: absolute;
@@ -1053,7 +1053,7 @@ section {
     outline-offset: 2px;
 }
 
-/* Featured badge — top-right of the featured project */
+/* featured badge */
 .project-featured {
     position: relative;
 }
@@ -1138,7 +1138,7 @@ section {
     flex-grow: 1;
 }
 
-/* Tech tags row at bottom of each project card */
+/* tech tags */
 .project-tags {
     display: flex;
     flex-wrap: wrap;
@@ -1182,7 +1182,7 @@ section {
     margin: 0 auto;
 }
 
-/* blur other cards when one is hovered */
+/* blur others on hover */
 .certificates-grid:has(.cert-card-wrapper:hover) .cert-card-wrapper:not(:hover) {
     opacity: 0.35;
     filter: blur(1.5px);
@@ -1228,7 +1228,7 @@ section {
   pointer-events: none;
 }
 
-/* on hover, back card slides left more */
+/* back card slides left */
 .cert-card-wrapper:hover .cert-card-back,
 .cert-card-wrapper.show-back .cert-card-back {
   transform: rotate(-8deg) translateX(-200px) translateY(10px) scale(0.95);
@@ -1264,13 +1264,13 @@ section {
   box-shadow: 0 20px 60px rgba(59, 130, 246, 0.25);
 }
 
-/* stop front card hover from breaking wrapper animation */
+/* stop front hover breaking wrapper */
 .cert-card-wrapper .cert-card:hover {
   transform: none !important;
   box-shadow: none !important;
 }
 
-/* ===== CERT CARD (front face) ===== */
+/* ===== CERT CARD ===== */
 .cert-card {
     display: flex;
     flex-direction: column;
@@ -1338,7 +1338,7 @@ section {
     background: #18181c;
 }
 
-/* Cert roll-in animation fill mode */
+/* cert roll-in fill */
 .cert-card.roll-in-left,
 .cert-card.roll-in-right,
 .cert-card.roll-in-center {
@@ -1378,7 +1378,7 @@ section {
     transform: translateX(100%);
 }
 
-/* Top accent line that widens on hover */
+/* accent line widens */
 .cert-card .cert-accent-line {
     position: absolute;
     top: 0;
@@ -1397,7 +1397,7 @@ section {
     right: 10%;
 }
 
-/* Certificate number badge (e.g. "01") */
+/* cert number */
 .cert-card .cert-number {
     position: absolute;
     top: 12px;
@@ -1462,7 +1462,7 @@ section {
     line-height: 1.5;
 }
 
-/* "View" button at bottom of cert card */
+/* view button */
 .cert-badge {
     display: inline-flex;
     align-items: center;
@@ -1742,7 +1742,7 @@ section {
     color: var(--accent);
 }
 
-/* Big CTA card on the right side */
+/* CTA card */
 .contact-cta {
     padding: 36px;
     background: var(--glass-bg);
@@ -1817,7 +1817,7 @@ section {
 
 /* responsive */
 
-/* ---- Tablets & smaller laptops ---- */
+/* tablets */
 @media (max-width: 968px) {
     .certificates-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -1860,7 +1860,7 @@ section {
     }
 }
 
-/* ---- Mobile (portrait tablets & large phones) ---- */
+/* mobile */
 @media (max-width: 768px) {
     section {
         padding: 70px 0;
@@ -1871,7 +1871,7 @@ section {
         margin-bottom: 40px;
     }
 
-    /* Mobile nav: slide-down menu from top */
+/* mobile nav */
     .nav-links {
         position: fixed;
         top: 64px;
@@ -1962,7 +1962,7 @@ section {
     }
 }
 
-/* ---- Small phones ---- */
+/* small phones */
 @media (max-width: 480px) {
     .cover-title {
         font-size: 1.6rem;
@@ -2090,7 +2090,7 @@ section {
         font-size: 0.85rem;
     }
 
-    /* On small screens, show front + back cards side by side instead of layered */
+    /* side by side on small screens */
     .certificates-grid {
         grid-template-columns: 1fr;
         gap: 20px;
